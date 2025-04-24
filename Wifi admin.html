@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi Password Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+        .view-password {
+            background-color: #2196F3;
+        }
+        .delete {
+            background-color: #f44336;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .login-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .form-switch {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .logout-btn {
+            background-color: #f44336;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login/Register Form -->
+        <div id="auth-container">
+            <div id="login-form" class="login-form">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button id="login-btn">Login</button>
+                <div class="form-switch">
+                    Don't have an account? <a href="#" id="show-register">Register</a>
+                </div>
+            </div>
+
+            <div id="register-form" class="login-form hidden">
+                <h2>Register</h2>
+                <div class="form-group">
+                    <label for="register-username">Username</label>
+                    <input type="text" id="register-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm">Confirm Password</label>
+                    <input type="password" id="register-confirm" required>
+                </div>
+                <button id="register-btn">Register</button>
+                <div class="form-switch">
+                    Already have an account? <a href="#" id="show-login">Login</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Application (hidden until login) -->
+        <div id="app-container" class="hidden">
+            <button id="logout-btn" class="logout-btn">Logout</button>
+            <h1>WiFi Password Manager</h1>
+            
+            <div id="add-form">
+                <h2>Add New WiFi Network</h2>
+                <div class="form-group">
+                    <label for="network-name">Network Name (SSID)</label>
+                    <input type="text" id="network-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location (optional)</label>
+                    <input type="text" id="location">
+                </div>
+                <div class="form-group">
+                    <label for="notes">Notes (optional)</label>
+                    <textarea id="notes" rows="3"></textarea>
+                </div>
+                <button id="save-btn">Save Network</button>
+            </div>
+            
+            <div class="search-box">
+                <h2>Your Saved Networks</h2>
+                <input type="text" id="search" placeholder="Search networks...">
+            </div>
+            
+            <table id="networks-table">
+                <thead>
+                    <tr>
+                        <th>Network Name</th>
+                        <th>Location</th>
+                        <th>Date Added</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="networks-list">
+                    <!-- Networks will be added here dynamically -->
+                </tbody>
+            </table>
+            
+            <div id="password-viewer" class="hidden">
+                <h2>Password Viewer</h2>
+                <div class="form-group">
+                    <label for="viewed-network">Network:</label>
+                    <input type="text" id="viewed-network" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="viewed-password">Password:</label>
+                    <input type="text" id="viewed-password" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="viewed-location">Location:</label>
+                    <input type="text" id="viewed-location" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="viewed-notes">Notes:</label>
+                    <textarea id="viewed-notes" rows="3" readonly></textarea>
+                </div>
+                <button id="close-viewer">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM elements
+            const authContainer = document.getElementById('auth-container');
+            const appContainer = document.getElementById('app-container');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const loginBtn = document.getElementById('login-btn');
+            const registerBtn = document.getElementById('register-btn');
+            const showRegister = document.getElementById('show-register');
+            const showLogin = document.getElementById('show-login');
+            const logoutBtn = document.getElementById('logout-btn');
+            
+            const saveBtn = document.getElementById('save-btn');
+            const networkNameInput = document.getElementById('network-name');
+            const passwordInput = document.getElementById('password');
+            const locationInput = document.getElementById('location');
+            const notesInput = document.getElementById('notes');
+            const searchInput = document.getElementById('search');
+            const networksList = document.getElementById('networks-list');
+            const passwordViewer = document.getElementById('password-viewer');
+            const closeViewerBtn = document.getElementById('close-viewer');
+            
+            // Current user
+            let currentUser = null;
+            
+            // Simple "hashing" function (for demo purposes only - not secure)
+            function simpleHash(str) {
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    const char = str.charCodeAt(i);
+                    hash = (hash << 5) - hash + char;
+                    hash |= 0; // Convert to 32bit integer
+                }
+                return hash.toString();
+            }
+            
+            // Check if user is logged in
+            function checkAuth() {
+                const user = localStorage.getItem('currentUser');
+                if (user) {
+                    currentUser = JSON.parse(user);
+                    authContainer.classList.add('hidden');
+                    appContainer.classList.remove('hidden');
+                    loadUserData();
+                }
+            }
+            
+            // Load user-specific data
+            function loadUserData() {
+                const userData = JSON.parse(localStorage.getItem('userData')) || {};
+                return userData[currentUser.username] || { networks: [] };
+            }
+            
+            // Save user-specific data
+            function saveUserData(data) {
+                const userData = JSON.parse(localStorage.getItem('userData')) || {};
+                userData[currentUser.username] = data;
+                localStorage.setItem('userData', JSON.stringify(userData));
+            }
+            
+            // Display networks
+            function displayNetworks(filter = '') {
+                const userData = loadUserData();
+                networksList.innerHTML = '';
+                
+                const filteredNetworks = userData.networks.filter(network => 
+                    network.name.toLowerCase().includes(filter.toLowerCase()) || 
+                    (network.location && network.location.toLowerCase().includes(filter.toLowerCase()))
+                );
+                
+                if (filteredNetworks.length === 0) {
+                    networksList.innerHTML = '<tr><td colspan="4">No networks found</td></tr>';
+                    return;
+                }
+                
+                filteredNetworks.forEach((network, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${network.name}</td>
+                        <td>${network.location || ''}</td>
+                        <td>${new Date(network.dateAdded).toLocaleDateString()}</td>
+                        <td class="actions">
+                            <button class="view-password" data-index="${index}">View</button>
+                            <button class="delete" data-index="${index}">Delete</button>
+                        </td>
+                    `;
+                    networksList.appendChild(row);
+                });
+                
+                // Add event listeners to view buttons
+                document.querySelectorAll('.view-password').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = this.getAttribute('data-index');
+                        viewPassword(index);
+                    });
+                });
+                
+                // Add event listeners to delete buttons
+                document.querySelectorAll('.delete').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const index = this.getAttribute('data-index');
+                        deleteNetwork(index);
+                    });
+                });
+            }
+            
+            // Login
+            loginBtn.addEventListener('click', function() {
+                const username = document.getElementById('login-username').value.trim();
+                const password = document.getElementById('login-password').value.trim();
+                
+                if (!username || !password) {
+                    alert('Please enter both username and password');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem('users')) || {};
+                
+                if (!users[username]) {
+                    alert('User not found');
+                    return;
+                }
+                
+                // In a real app, you would use proper password hashing and comparison
+                if (users[username].password !== simpleHash(password)) {
+                    alert('Incorrect password');
+                    return;
+                }
+                
+                // Login successful
+                currentUser = { username };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                checkAuth();
+            });
+            
+            // Register
+            registerBtn.addEventListener('click', function() {
+                const username = document.getElementById('register-username').value.trim();
+                const password = document.getElementById('register-password').value.trim();
+                const confirm = document.getElementById('register-confirm').value.trim();
+                
+                if (!username || !password) {
+                    alert('Please enter both username and password');
+                    return;
+                }
+                
+                if (password !== confirm) {
+                    alert('Passwords do not match');
+                    return;
+                }
+                
+                const users = JSON.parse(localStorage.getItem('users')) || {};
+                
+                if (users[username]) {
+                    alert('Username already exists');
+                    return;
+                }
+                
+                // In a real app, you would use proper password hashing
+                users[username] = {
+                    password: simpleHash(password)
+                };
+                
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                alert('Registration successful! Please login.');
+                showLogin.click();
+                
+                // Clear form
+                document.getElementById('register-username').value = '';
+                document.getElementById('register-password').value = '';
+                document.getElementById('register-confirm').value = '';
+            });
+            
+            // Show register form
+            showRegister.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+            });
+            
+            // Show login form
+            showLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                registerForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+            });
+            
+            // Logout
+            logoutBtn.addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                currentUser = null;
+                authContainer.classList.remove('hidden');
+                appContainer.classList.add('hidden');
+                
+                // Clear login form
+                document.getElementById('login-username').value = '';
+                document.getElementById('login-password').value = '';
+            });
+            
+            // Save new network
+            saveBtn.addEventListener('click', function() {
+                const name = networkNameInput.value.trim();
+                const password = passwordInput.value.trim();
+                
+                if (!name || !password) {
+                    alert('Network name and password are required');
+                    return;
+                }
+                
+                const userData = loadUserData();
+                
+                const newNetwork = {
+                    name,
+                    password,
+                    location: locationInput.value.trim(),
+                    notes: notesInput.value.trim(),
+                    dateAdded: new Date().toISOString()
+                };
+                
+                userData.networks.push(newNetwork);
+                saveUserData(userData);
+                
+                // Clear form
+                networkNameInput.value = '';
+                passwordInput.value = '';
+                locationInput.value = '';
+                notesInput.value = '';
+                
+                // Refresh display
+                displayNetworks();
+            });
+            
+            // Search networks
+            searchInput.addEventListener('input', function() {
+                displayNetworks(this.value);
+            });
+            
+            // View password
+            function viewPassword(index) {
+                const userData = loadUserData();
+                const network = userData.networks[index];
+                document.getElementById('viewed-network').value = network.name;
+                document.getElementById('viewed-password').value = network.password;
+                document.getElementById('viewed-location').value = network.location || '';
+                document.getElementById('viewed-notes').value = network.notes || '';
+                passwordViewer.classList.remove('hidden');
+            }
+            
+            // Close password viewer
+            closeViewerBtn.addEventListener('click', function() {
+                passwordViewer.classList.add('hidden');
+            });
+            
+            // Delete network
+            function deleteNetwork(index) {
+                if (confirm('Are you sure you want to delete this network?')) {
+                    const userData = loadUserData();
+                    userData.networks.splice(index, 1);
+                    saveUserData(userData);
+                    displayNetworks(searchInput.value);
+                }
+            }
+            
+            // Initialize
+            checkAuth();
+        });
+    </script>
+</body>
+</html>
