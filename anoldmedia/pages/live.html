@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live — ANOLDMEDIA</title>
+  <meta name="description" content="Watch ANOLDMEDIA live channel.">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="icon" href="../assets/images/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body data-base="..">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html" aria-label="ANOLDMEDIA home">
+        <img src="../assets/images/logo.svg" alt="ANOLDMEDIA" width="144" height="32">
+      </a>
+      <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">☰</button>
+      <nav class="site-nav" id="site-nav">
+        <a href="../index.html">Home</a>
+        <a href="live.html">Live</a>
+        <a href="shows.html">Shows</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="section">
+      <div class="container">
+        <h1>Watch Live</h1>
+        <p class="card-text">Enjoy our live stream. For best results use a modern browser.</p>
+        <div class="video-wrap" style="margin-top: 12px;">
+          <video id="liveVideo" controls playsinline poster="../assets/images/logo.svg"></video>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> ANOLDMEDIA</p>
+      <nav class="footer-nav">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="schedule.html">Schedule</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="../assets/js/player.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Replace with your own HLS URL when available
+      initLivePlayer('liveVideo', 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8');
+    });
+  </script>
+  <script src="../assets/js/main.js" defer></script>
+</body>
+</html>

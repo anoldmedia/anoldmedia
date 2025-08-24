@@ -1,0 +1,13 @@
+{
+  "name": "ANOLDMEDIA",
+  "short_name": "ANOLDMEDIA",
+  "description": "ANOLDMEDIA is online TV: live channel, shows, and schedule.",
+  "start_url": "/anoldmedia/index.html",
+  "scope": "/anoldmedia/",
+  "display": "standalone",
+  "background_color": "#0b0e14",
+  "theme_color": "#4f8cff",
+  "icons": [
+    { "src": "assets/images/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

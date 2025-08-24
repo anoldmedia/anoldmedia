@@ -1,0 +1,34 @@
+{
+  "shows": [
+    {
+      "id": "am-morning",
+      "title": "ANOLD Morning",
+      "description": "Kickstart your day with news and culture.",
+      "thumbnail": "../assets/images/logo.svg"
+    },
+    {
+      "id": "retro-hour",
+      "title": "Retro Hour",
+      "description": "Classic TV moments reimagined.",
+      "thumbnail": "../assets/images/logo.svg"
+    },
+    {
+      "id": "deep-dive",
+      "title": "Deep Dive",
+      "description": "Long-form interviews and documentaries.",
+      "thumbnail": "../assets/images/logo.svg"
+    },
+    {
+      "id": "late-live",
+      "title": "Late Live",
+      "description": "Live music and night talks.",
+      "thumbnail": "../assets/images/logo.svg"
+    }
+  ],
+  "schedule": [
+    { "time": "08:00", "showId": "am-morning" },
+    { "time": "12:00", "showId": "retro-hour" },
+    { "time": "18:00", "showId": "deep-dive" },
+    { "time": "22:00", "showId": "late-live" }
+  ]
+}

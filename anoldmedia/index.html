@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ANOLDMEDIA — Online TV</title>
+  <meta name="description" content="ANOLDMEDIA is online TV: live channel, shows, and schedule.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-base=".">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="ANOLDMEDIA home">
+        <img src="assets/images/logo.svg" alt="ANOLDMEDIA" width="144" height="32">
+      </a>
+      <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation">
+        ☰
+      </button>
+      <nav class="site-nav" id="site-nav">
+        <a href="index.html">Home</a>
+        <a href="pages/live.html">Live</a>
+        <a href="pages/shows.html">Shows</a>
+        <a href="pages/schedule.html">Schedule</a>
+        <a href="pages/about.html">About</a>
+        <a href="pages/contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <h1>ANOLDMEDIA</h1>
+          <p>Online TV with live broadcasts and a library of shows. Watch anywhere, anytime.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="pages/live.html">Watch Live</a>
+            <a class="btn" href="pages/shows.html">Browse Shows</a>
+          </div>
+        </div>
+        <div class="hero-art" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Featured Shows</h2>
+          <a class="link" href="pages/shows.html">See all</a>
+        </div>
+        <div id="shows-grid" class="grid grid-cards" data-limit="3"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> ANOLDMEDIA</p>
+      <nav class="footer-nav">
+        <a href="pages/about.html">About</a>
+        <a href="pages/contact.html">Contact</a>
+        <a href="pages/schedule.html">Schedule</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>
